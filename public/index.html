@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Vista - Real Estate Listing Search</title>
+    <style>
+        /* Modern Design System - 2024 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Typography */
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+            color: #1E293B;
+            background-color: #FFFFFF;
+            margin: 0;
+            padding: 24px;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            gap: 24px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .left-panel {
+            flex: 0 0 520px;
+            background: #FFFFFF;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .right-panel {
+            flex: 1;
+            background: #FFFFFF;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        /* Typography Scale */
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0F172A;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1E293B;
+            margin-bottom: 24px;
+            letter-spacing: -0.025em;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #334155;
+            margin: 24px 0 16px 0;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #475569;
+            margin: 0 0 8px 0;
+        }
+
+        p {
+            color: #64748B;
+            margin-bottom: 24px;
+        }
+
+        /* Form Components */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], 
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: #1F2937;
+            background-color: #FFFFFF;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, 
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        input[type="text"]:hover, 
+        input[type="number"]:hover,
+        select:hover {
+            border-color: #9CA3AF;
+        }
+
+        /* Buttons */
+        button {
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            min-height: 44px;
+        }
+
+        /* Primary Button */
+        .btn-primary, button {
+            background-color: #2563EB;
+            color: #FFFFFF;
+            width: 100%;
+        }
+
+        .btn-primary:hover, button:hover {
+            background-color: #1D4ED8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:active, button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #D1D5DB;
+            color: #9CA3AF;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Success Button */
+        .btn-success {
+            background-color: #10B981;
+            color: #FFFFFF;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Warning Button */
+        .btn-warning {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+        }
+
+        .btn-warning:hover {
+            background-color: #D97706;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Small Buttons */
+        .btn-small {
+            font-size: 0.875rem;
+            padding: 8px 16px;
+            min-height: 36px;
+            width: auto;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 32px;
+            padding: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+        }
+
+        /* Cards */
+        .card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Property Rows */
+        .property-row {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .property-row:hover {
+            border-color: #C7D2FE;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .property-inputs {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+
+        .property-inputs-row2 {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .form-group.inline {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.inline label {
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group.inline input,
+        .form-group.inline select {
+            width: 100%;
+            font-size: 0.875rem;
+        }
+
+        .form-group.upload {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .form-group.upload label {
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+
+        .upload-status-indicator {
+            font-size: 0.75rem;
+            color: #64748B;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .upload-status-indicator.processing {
+            color: #2563EB;
+            font-weight: 500;
+        }
+
+        .upload-status-indicator.success {
+            color: #10B981;
+            font-weight: 500;
+        }
+
+        .upload-status-indicator.error {
+            color: #EF4444;
+            font-weight: 500;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            margin: 24px 0;
+            padding: 32px;
+            background: #F8FAFC;
+            border: 2px dashed #CBD5E1;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .upload-section:hover {
+            border-color: #2563EB;
+            background: #F1F5F9;
+        }
+
+        .upload-description {
+            color: #64748B;
+            margin: 16px 0;
+            font-style: normal;
+        }
+
+        .upload-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-weight: 500;
+        }
+
+        .success {
+            background-color: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
+        }
+
+        .error {
+            background-color: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #991B1B;
+        }
+
+        .loading {
+            background-color: #FFFBEB;
+            border: 1px solid #FDE68A;
+            color: #92400E;
+        }
+
+        /* Address Display */
+        .address-display {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            border-radius: 8px;
+            color: #065F46;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .address-display.error {
+            background: #FEF2F2;
+            border-color: #FECACA;
+            color: #991B1B;
+        }
+
+        .address-display:empty {
+            display: none;
+        }
+
+        /* Autocomplete */
+        .autocomplete-container {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .autocomplete-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            box-sizing: border-box;
+        }
+
+        .autocomplete-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .autocomplete-suggestion {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #F3F4F6;
+            font-size: 0.875rem;
+        }
+
+        .autocomplete-suggestion:hover {
+            background-color: #F8FAFC;
+        }
+
+        .autocomplete-suggestion:last-child {
+            border-bottom: none;
+        }
+
+        /* Route Results */
+        .route-summary {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            color: #1E40AF;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .route-step {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            padding: 20px;
+            margin: 12px 0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .route-step h4 {
+            color: #2563EB;
+        }
+
+        /* Map */
+        #map {
+            height: 500px;
+            width: 100%;
+            margin: 24px 0;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container {
+            margin: 24px 0;
+        }
+
+        .route-results {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 24px;
+        }
+
+        /* Upload Results */
+        .upload-results {
+            margin-top: 24px;
+            padding: 24px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .extracted-mls, .extracted-address {
+            margin: 16px 0;
+            padding: 16px;
+            background: #F0FDF4;
+            border-left: 4px solid #10B981;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+
+        /* Status Indicators */
+        .upload-status {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #64748B;
+        }
+
+        .upload-status.processing {
+            color: #2563EB;
+        }
+
+        .upload-status.success {
+            color: #10B981;
+        }
+
+        .upload-status.error {
+            color: #EF4444;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .left-panel {
+                flex: none;
+            }
+            
+            .right-panel {
+                flex: none;
+            }
+
+            body {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .left-panel,
+            .right-panel {
+                padding: 24px;
+            }
+
+            .property-inputs {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .property-inputs-row2 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-group.inline {
+                flex: 1;
+            }
+
+            .form-group.inline input,
+            .form-group.inline select {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .form-group.upload {
+                text-align: left;
+                align-items: flex-start;
+            }
+
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 50%;
+            border-top-color: #2563EB;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Focus Improvements */
+        button:focus,
+        input:focus,
+        select:focus {
+            outline: 2px solid #2563EB;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel: Data Entry Form -->
+        <div class="left-panel">
+            <h1>Route Planning</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Real Estate Route Optimization
+            </p>
+            
+            <!-- Route Optimization Section -->
+            <div class="section">
+                <h2>Route Optimization</h2>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Plan an optimized route to visit multiple properties starting and ending at your office.
+                </p>
+                
+                <form id="routeForm">
+                <!-- Office Address -->
+                <div class="form-group">
+                    <label for="officeAddress">Your Office Address:</label>
+                    <input type="text" id="officeAddress" name="officeAddress" required 
+                           placeholder="Enter your office address (e.g., 123 Main St, Toronto, ON)">
+                </div>
+
+
+                <!-- Properties Section -->
+                <div class="properties-section">
+                    <h3>Properties to Visit (up to 5):</h3>
+                    
+                    <div class="property-row" data-property="1">
+                        <!-- Row 1: MLS and Minutes -->
+                        <div class="property-inputs">
+                            <div class="form-group inline">
+                                <label for="mls1">MLS #1:</label>
+                                <input type="text" id="mls1" name="mls1" placeholder="Enter MLS number" oninput="validateMLS('mls1', this.value, document.getElementById('address1'))">
+                            </div>
+                            <div class="form-group inline">
+                                <label for="time1">Minutes:</label>
+                                <input type="number" id="time1" name="time1" min="5" max="180" placeholder="30">
+                            </div>
+                        </div>
+                        <!-- Row 2: Upload and Address -->
+                        <div class="property-inputs-row2">
+                            <div class="form-group upload">
+                                <label>Upload Listing:</label>
+                                <input type="file" id="docUpload1" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.webp" style="display: none;" onchange="handlePropertyUpload(1, this)">
+                                <button type="button" class="btn-warning btn-small" onclick="document.getElementById('docUpload1').click()">
+                                    📄 Upload
+                                </button>
+                            </div>
+                            <div class="autocomplete-container">
+                                <label for="address-input1">Or Type Address:</label>
+                                <input type="text" id="address-input1" class="autocomplete-input" 
+                                       placeholder="Start typing address (e.g., 123 Queen St, Toronto)" 
+                                       oninput="handleAddressInput(1, this.value)" 
+                                       onblur="hideAddressSuggestions(1)"
+                                       onfocus="showAddressSuggestions(1)">
+                                <div id="suggestions1" class="autocomplete-suggestions"></div>
+                            </div>
+                        </div>
+                        <!-- Row 3: Address Display -->
+                        <div style="margin-top: 16px;">
+                            <div class="address-display" id="address1"></div>
+                            <div class="upload-status-indicator" id="uploadStatus1" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="property-row" data-property="2">
+                        <!-- Row 1: MLS and Minutes -->
+                        <div class="property-inputs">
+                            <div class="form-group inline">
+                                <label for="mls2">MLS #2:</label>
+                                <input type="text" id="mls2" name="mls2" placeholder="Enter MLS number" oninput="validateMLS('mls2', this.value, document.getElementById('address2'))">
+                            </div>
+                            <div class="form-group inline">
+                                <label for="time2">Minutes:</label>
+                                <input type="number" id="time2" name="time2" min="5" max="180" placeholder="30">
+                            </div>
+                        </div>
+                        <!-- Row 2: Upload and Address -->
+                        <div class="property-inputs-row2">
+                            <div class="form-group upload">
+                                <label>Upload Listing:</label>
+                                <input type="file" id="docUpload2" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.webp" style="display: none;" onchange="handlePropertyUpload(2, this)">
+                                <button type="button" class="btn-warning btn-small" onclick="document.getElementById('docUpload2').click()">
+                                    📄 Upload
+                                </button>
+                            </div>
+                            <div class="autocomplete-container">
+                                <label for="address-input2">Or Type Address:</label>
+                                <input type="text" id="address-input2" class="autocomplete-input" 
+                                       placeholder="Start typing address (e.g., 123 Queen St, Toronto)" 
+                                       oninput="handleAddressInput(2, this.value)" 
+                                       onblur="hideAddressSuggestions(2)"
+                                       onfocus="showAddressSuggestions(2)">
+                                <div id="suggestions2" class="autocomplete-suggestions"></div>
+                            </div>
+                        </div>
+                        <!-- Row 3: Address Display -->
+                        <div style="margin-top: 16px;">
+                            <div class="address-display" id="address2"></div>
+                            <div class="upload-status-indicator" id="uploadStatus2" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="property-row" data-property="3">
+                        <!-- Row 1: MLS and Minutes -->
+                        <div class="property-inputs">
+                            <div class="form-group inline">
+                                <label for="mls3">MLS #3:</label>
+                                <input type="text" id="mls3" name="mls3" placeholder="Enter MLS number" oninput="validateMLS('mls3', this.value, document.getElementById('address3'))">
+                            </div>
+                            <div class="form-group inline">
+                                <label for="time3">Minutes:</label>
+                                <input type="number" id="time3" name="time3" min="5" max="180" placeholder="30">
+                            </div>
+                        </div>
+                        <!-- Row 2: Upload and Address -->
+                        <div class="property-inputs-row2">
+                            <div class="form-group upload">
+                                <label>Upload Listing:</label>
+                                <input type="file" id="docUpload3" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.webp" style="display: none;" onchange="handlePropertyUpload(3, this)">
+                                <button type="button" class="btn-warning btn-small" onclick="document.getElementById('docUpload3').click()">
+                                    📄 Upload
+                                </button>
+                            </div>
+                            <div class="autocomplete-container">
+                                <label for="address-input3">Or Type Address:</label>
+                                <input type="text" id="address-input3" class="autocomplete-input" 
+                                       placeholder="Start typing address (e.g., 123 Queen St, Toronto)" 
+                                       oninput="handleAddressInput(3, this.value)" 
+                                       onblur="hideAddressSuggestions(3)"
+                                       onfocus="showAddressSuggestions(3)">
+                                <div id="suggestions3" class="autocomplete-suggestions"></div>
+                            </div>
+                        </div>
+                        <!-- Row 3: Address Display -->
+                        <div style="margin-top: 16px;">
+                            <div class="address-display" id="address3"></div>
+                            <div class="upload-status-indicator" id="uploadStatus3" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="property-row" data-property="4">
+                        <!-- Row 1: MLS and Minutes -->
+                        <div class="property-inputs">
+                            <div class="form-group inline">
+                                <label for="mls4">MLS #4:</label>
+                                <input type="text" id="mls4" name="mls4" placeholder="Enter MLS number" oninput="validateMLS('mls4', this.value, document.getElementById('address4'))">
+                            </div>
+                            <div class="form-group inline">
+                                <label for="time4">Minutes:</label>
+                                <input type="number" id="time4" name="time4" min="5" max="180" placeholder="30">
+                            </div>
+                        </div>
+                        <!-- Row 2: Upload and Address -->
+                        <div class="property-inputs-row2">
+                            <div class="form-group upload">
+                                <label>Upload Listing:</label>
+                                <input type="file" id="docUpload4" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.webp" style="display: none;" onchange="handlePropertyUpload(4, this)">
+                                <button type="button" class="btn-warning btn-small" onclick="document.getElementById('docUpload4').click()">
+                                    📄 Upload
+                                </button>
+                            </div>
+                            <div class="autocomplete-container">
+                                <label for="address-input4">Or Type Address:</label>
+                                <input type="text" id="address-input4" class="autocomplete-input" 
+                                       placeholder="Start typing address (e.g., 123 Queen St, Toronto)" 
+                                       oninput="handleAddressInput(4, this.value)" 
+                                       onblur="hideAddressSuggestions(4)"
+                                       onfocus="showAddressSuggestions(4)">
+                                <div id="suggestions4" class="autocomplete-suggestions"></div>
+                            </div>
+                        </div>
+                        <!-- Row 3: Address Display -->
+                        <div style="margin-top: 16px;">
+                            <div class="address-display" id="address4"></div>
+                            <div class="upload-status-indicator" id="uploadStatus4" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="property-row" data-property="5">
+                        <!-- Row 1: MLS and Minutes -->
+                        <div class="property-inputs">
+                            <div class="form-group inline">
+                                <label for="mls5">MLS #5:</label>
+                                <input type="text" id="mls5" name="mls5" placeholder="Enter MLS number" oninput="validateMLS('mls5', this.value, document.getElementById('address5'))">
+                            </div>
+                            <div class="form-group inline">
+                                <label for="time5">Minutes:</label>
+                                <input type="number" id="time5" name="time5" min="5" max="180" placeholder="30">
+                            </div>
+                        </div>
+                        <!-- Row 2: Upload and Address -->
+                        <div class="property-inputs-row2">
+                            <div class="form-group upload">
+                                <label>Upload Listing:</label>
+                                <input type="file" id="docUpload5" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.webp" style="display: none;" onchange="handlePropertyUpload(5, this)">
+                                <button type="button" class="btn-warning btn-small" onclick="document.getElementById('docUpload5').click()">
+                                    📄 Upload
+                                </button>
+                            </div>
+                            <div class="autocomplete-container">
+                                <label for="address-input5">Or Type Address:</label>
+                                <input type="text" id="address-input5" class="autocomplete-input" 
+                                       placeholder="Start typing address (e.g., 123 Queen St, Toronto)" 
+                                       oninput="handleAddressInput(5, this.value)" 
+                                       onblur="hideAddressSuggestions(5)"
+                                       onfocus="showAddressSuggestions(5)">
+                                <div id="suggestions5" class="autocomplete-suggestions"></div>
+                            </div>
+                        </div>
+                        <!-- Row 3: Address Display -->
+                        <div style="margin-top: 16px;">
+                            <div class="address-display" id="address5"></div>
+                            <div class="upload-status-indicator" id="uploadStatus5" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="optimizeBtn" disabled>Optimize Route</button>
+            </form>
+            </div>
+        </div>
+        
+        <!-- Right Panel: Map and Route Results -->
+        <div class="right-panel">
+            <h1>Agent Vista - Route Visualization</h1>
+            
+            <!-- Document Upload Section -->
+            <div class="upload-section" style="display: none;">
+                <h3>📄 Document Upload</h3>
+                <p class="upload-description">Upload property documents (PDFs, images) to extract MLS numbers and addresses automatically.</p>
+                
+                <div class="upload-container">
+                    <input type="file" id="documentUpload" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.webp" style="display: none;" onchange="handleDocumentUpload(this)">
+                    <button type="button" class="btn-success" onclick="document.getElementById('documentUpload').click()">
+                        📁 Choose Document
+                    </button>
+                </div>
+                
+                <div id="uploadStatus" class="upload-status"></div>
+                
+                <div id="uploadResults" class="upload-results" style="display: none;">
+                    <h4>📊 Extraction Results</h4>
+                    <div id="extractedInfo"></div>
+                    <button type="button" class="btn-primary use-extracted-btn" onclick="useExtractedData()" style="display: none;">
+                        ✨ Use Extracted Data
+                    </button>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+            
+            <div id="routeResult" class="route-results"></div>
+        </div>
+    </div>
+
+    <!-- Google Maps JavaScript API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6fO8lH46QMacGf7rU8GTKsRe6XTSbIuU&libraries=places&callback=initMap"></script>
+
+    <script>
+        // Google Maps variables
+        let map;
+        let directionsService;
+        let directionsRenderer;
+        let markers = [];
+
+        // Initialize Google Map with directions capabilities
+        function initMap() {
+            console.log('Initializing Google Map...');
+            
+            // Center on Richmond Hill/Toronto by default
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 11,
+                center: { lat: 43.6532, lng: -79.3832 },
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            // Initialize directions service and renderer
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                draggable: false,
+                suppressMarkers: false,
+                suppressInfoWindows: false
+            });
+            directionsRenderer.setMap(map);
+            
+            console.log('Google Map with directions initialized');
+        }
+
+        // Function to display route on Google Map with directions
+        function displayRouteOnMap(officeAddress, properties, optimizedOrder) {
+            if (!map || !directionsService) {
+                console.log('Google Map not yet loaded');
+                return;
+            }
+
+            // Clear existing markers and directions
+            clearMapMarkers();
+            directionsRenderer.setDirections({routes: []});
+
+            // Create waypoints for the route: office -> properties -> office
+            if (optimizedOrder && optimizedOrder.length > 0) {
+                console.log('Creating Google Maps route with optimized order:', optimizedOrder);
+                createGoogleMapsRoute(optimizedOrder);
+            } else {
+                // Fallback: create route from provided data
+                const routePoints = [officeAddress];
+                properties.forEach(prop => routePoints.push(prop.address));
+                routePoints.push(officeAddress);
+                console.log('Creating Google Maps route with waypoints:', routePoints);
+                createGoogleMapsRoute(routePoints);
+            }
+        }
+
+        // Create Google Maps route with directions
+        function createGoogleMapsRoute(waypoints) {
+            if (waypoints.length < 2) {
+                console.log('Not enough waypoints for route');
+                return;
+            }
+
+            // Prepare waypoints for Google Directions API
+            const origin = waypoints[0];
+            const destination = waypoints[waypoints.length - 1];
+            const waypointsForGoogle = waypoints.slice(1, -1).map(address => ({
+                location: address,
+                stopover: true
+            }));
+
+            console.log('Requesting directions from:', origin, 'to:', destination, 'via:', waypointsForGoogle);
+
+            const request = {
+                origin: origin,
+                destination: destination,
+                waypoints: waypointsForGoogle,
+                optimizeWaypoints: false, // We already optimized the route
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            };
+
+            directionsService.route(request, (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    console.log('Google Directions API success');
+                    directionsRenderer.setDirections(result);
+                    
+                    // Add custom markers for property information
+                    addPropertyMarkers(waypoints);
+                } else {
+                    console.error('Google Directions API error:', status);
+                    // Fallback to just showing markers
+                    addPropertyMarkers(waypoints);
+                }
+            });
+        }
+
+        // Add custom property markers to the map
+        function addPropertyMarkers(waypoints) {
+            waypoints.forEach((address, index) => {
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address: address }, (results, status) => {
+                    if (status === google.maps.GeocoderStatus.OK && results[0]) {
+                        const position = results[0].geometry.location;
+                        
+                        let markerIcon;
+                        let title;
+                        
+                        if (index === 0) {
+                            // Office start marker
+                            markerIcon = {
+                                url: 'data:image/svg+xml;base64,' + btoa(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                        <circle cx="16" cy="16" r="12" fill="#10B981" stroke="white" stroke-width="3"/>
+                                        <text x="16" y="20" text-anchor="middle" font-family="Arial" font-size="12" fill="white" font-weight="bold">S</text>
+                                    </svg>
+                                `),
+                                scaledSize: new google.maps.Size(32, 32)
+                            };
+                            title = 'Start: Office';
+                        } else if (index === waypoints.length - 1) {
+                            // Office end marker
+                            markerIcon = {
+                                url: 'data:image/svg+xml;base64,' + btoa(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                        <circle cx="16" cy="16" r="12" fill="#EF4444" stroke="white" stroke-width="3"/>
+                                        <text x="16" y="20" text-anchor="middle" font-family="Arial" font-size="12" fill="white" font-weight="bold">E</text>
+                                    </svg>
+                                `),
+                                scaledSize: new google.maps.Size(32, 32)
+                            };
+                            title = 'End: Office';
+                        } else {
+                            // Property marker
+                            markerIcon = {
+                                url: 'data:image/svg+xml;base64,' + btoa(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                        <circle cx="16" cy="16" r="12" fill="#2563EB" stroke="white" stroke-width="3"/>
+                                        <text x="16" y="20" text-anchor="middle" font-family="Arial" font-size="10" fill="white" font-weight="bold">${index}</text>
+                                    </svg>
+                                `),
+                                scaledSize: new google.maps.Size(32, 32)
+                            };
+                            title = `Property ${index}: ${address}`;
+                        }
+
+                        const marker = new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            title: title,
+                            icon: markerIcon
+                        });
+
+                        markers.push(marker);
+
+                        // Add info window with property details
+                        const infoWindow = new google.maps.InfoWindow({
+                            content: `<div style="font-family: 'Inter', sans-serif; max-width: 200px;">
+                                <strong>${title}</strong><br>
+                                <small>${address}</small>
+                            </div>`
+                        });
+
+                        marker.addListener('click', () => {
+                            infoWindow.open(map, marker);
+                        });
+                    }
+                });
+            });
+        }
+
+        // Clear all map markers
+        function clearMapMarkers() {
+            markers.forEach(marker => {
+                marker.setMap(null);
+            });
+            markers = [];
+        }
+
+
+        // Global variables for sharing functionality
+        let currentRouteData = null;
+
+        // Address autocomplete functionality
+        let addressDebounceTimers = {};
+        let addressCache = new Map();
+
+        // Handle address input with debouncing
+        function handleAddressInput(propertyNumber, query) {
+            if (!query || query.length < 3) {
+                hideAddressSuggestions(propertyNumber);
+                return;
+            }
+
+            // Clear existing timer
+            if (addressDebounceTimers[propertyNumber]) {
+                clearTimeout(addressDebounceTimers[propertyNumber]);
+            }
+
+            // Set new timer for API call
+            addressDebounceTimers[propertyNumber] = setTimeout(async () => {
+                await searchCanadianAddresses(propertyNumber, query);
+            }, 300); // 300ms delay
+        }
+
+        // Search for Canadian addresses using Nominatim API
+        async function searchCanadianAddresses(propertyNumber, query) {
+            const cacheKey = query.toLowerCase();
+            
+            // Check cache first
+            if (addressCache.has(cacheKey)) {
+                displayAddressSuggestions(propertyNumber, addressCache.get(cacheKey));
+                return;
+            }
+
+            try {
+                console.log(`Searching addresses for: ${query}`);
+                
+                // Use Nominatim API for Canadian addresses
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&countrycodes=ca&addressdetails=1&limit=8&q=${encodeURIComponent(query + ', Canada')}`
+                );
+                
+                if (!response.ok) {
+                    throw new Error('Address search failed');
+                }
+                
+                const results = await response.json();
+                
+                // Format results
+                const addresses = results.map(result => ({
+                    display_name: result.display_name,
+                    formatted: formatCanadianAddress(result)
+                })).filter(addr => addr.formatted);
+                
+                // Cache results
+                addressCache.set(cacheKey, addresses);
+                
+                displayAddressSuggestions(propertyNumber, addresses);
+                
+            } catch (error) {
+                console.error('Error searching addresses:', error);
+                hideAddressSuggestions(propertyNumber);
+            }
+        }
+
+        // Format Canadian address from Nominatim result
+        function formatCanadianAddress(result) {
+            const addr = result.address || {};
+            
+            let formatted = '';
+            
+            // House number + street
+            if (addr.house_number && addr.road) {
+                formatted += `${addr.house_number} ${addr.road}`;
+            } else if (addr.road) {
+                formatted += addr.road;
+            }
+            
+            // City
+            if (addr.city || addr.town || addr.village) {
+                const city = addr.city || addr.town || addr.village;
+                formatted += formatted ? `, ${city}` : city;
+            }
+            
+            // Province
+            if (addr.state) {
+                formatted += formatted ? `, ${addr.state}` : addr.state;
+            }
+            
+            return formatted || result.display_name;
+        }
+
+        // Display address suggestions dropdown
+        function displayAddressSuggestions(propertyNumber, addresses) {
+            const suggestionsDiv = document.getElementById(`suggestions${propertyNumber}`);
+            if (!suggestionsDiv) return;
+
+            if (addresses.length === 0) {
+                hideAddressSuggestions(propertyNumber);
+                return;
+            }
+
+            suggestionsDiv.innerHTML = '';
+            addresses.forEach(addr => {
+                const suggestion = document.createElement('div');
+                suggestion.className = 'autocomplete-suggestion';
+                suggestion.textContent = addr.formatted;
+                suggestion.onmousedown = (e) => {
+                    e.preventDefault(); // Prevent blur event
+                    selectAddress(propertyNumber, addr.formatted);
+                };
+                suggestionsDiv.appendChild(suggestion);
+            });
+
+            suggestionsDiv.style.display = 'block';
+        }
+
+        // Select an address from suggestions
+        function selectAddress(propertyNumber, address) {
+            console.log(`Selected address for property ${propertyNumber}: ${address}`);
+            
+            // Update input field
+            const input = document.getElementById(`address-input${propertyNumber}`);
+            if (input) {
+                input.value = address;
+            }
+            
+            // Clear MLS input
+            const mlsInput = document.getElementById(`mls${propertyNumber}`);
+            if (mlsInput) {
+                mlsInput.value = '';
+            }
+            
+            // Display selected address
+            const addressDiv = document.getElementById(`address${propertyNumber}`);
+            if (addressDiv) {
+                addressDiv.textContent = address;
+                addressDiv.className = 'address-display';
+                
+                // Add to validated properties
+                validatedProperties.add(`mls${propertyNumber}`);
+                updateOptimizeButton();
+            }
+            
+            // Set default visit time
+            const timeInput = document.getElementById(`time${propertyNumber}`);
+            if (timeInput && !timeInput.value) {
+                timeInput.value = '30';
+            }
+            
+            hideAddressSuggestions(propertyNumber);
+        }
+
+        // Show address suggestions
+        function showAddressSuggestions(propertyNumber) {
+            const input = document.getElementById(`address-input${propertyNumber}`);
+            if (input && input.value.length >= 3) {
+                handleAddressInput(propertyNumber, input.value);
+            }
+        }
+
+        // Hide address suggestions
+        function hideAddressSuggestions(propertyNumber) {
+            setTimeout(() => {
+                const suggestionsDiv = document.getElementById(`suggestions${propertyNumber}`);
+                if (suggestionsDiv) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            }, 150); // Small delay to allow click events
+        }
+
+        // Function to copy Google Maps link to clipboard
+        function copyGoogleMapsLink(url, button) {
+            navigator.clipboard.writeText(url).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#007bff';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy link:', err);
+                // Fallback: show the URL in an alert
+                alert('Copy this link:\n' + url);
+            });
+        }
+
+
+        // Route optimization functionality
+        const mlsInputs = ['mls1', 'mls2', 'mls3', 'mls4', 'mls5'];
+        const validatedProperties = new Set();
+
+        // Add event listeners to MLS inputs for real-time validation
+        mlsInputs.forEach((inputId, index) => {
+            const input = document.getElementById(inputId);
+            const addressDiv = document.getElementById(`address${index + 1}`);
+            
+            let debounceTimer;
+            input.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                const mlsNumber = this.value.trim();
+                
+                if (mlsNumber === '') {
+                    addressDiv.textContent = '';
+                    addressDiv.className = 'address-display';
+                    validatedProperties.delete(inputId);
+                    updateOptimizeButton();
+                    return;
+                }
+                
+                debounceTimer = setTimeout(async () => {
+                    await validateMLS(inputId, mlsNumber, addressDiv);
+                }, 1000);
+            });
+        });
+
+        async function validateMLS(inputId, mlsNumber, addressDiv) {
+            addressDiv.textContent = 'Validating...';
+            addressDiv.className = 'address-display';
+            
+            try {
+                const response = await fetch('/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ listingNumber: mlsNumber })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addressDiv.textContent = data.address;
+                    addressDiv.className = 'address-display';
+                    validatedProperties.add(inputId);
+                } else {
+                    addressDiv.textContent = 'Invalid MLS number';
+                    addressDiv.className = 'address-display error';
+                    validatedProperties.delete(inputId);
+                }
+            } catch (error) {
+                addressDiv.textContent = 'Error validating MLS';
+                addressDiv.className = 'address-display error';
+                validatedProperties.delete(inputId);
+            }
+            
+            updateOptimizeButton();
+        }
+
+        function updateOptimizeButton() {
+            const optimizeBtn = document.getElementById('optimizeBtn');
+            const officeAddress = document.getElementById('officeAddress').value.trim();
+            const hasValidProperties = validatedProperties.size > 0;
+            
+            optimizeBtn.disabled = !(officeAddress && hasValidProperties);
+        }
+
+        // Office address input validation
+        document.getElementById('officeAddress').addEventListener('input', updateOptimizeButton);
+
+        // Route optimization form submission
+        document.getElementById('routeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const officeAddress = document.getElementById('officeAddress').value.trim();
+            const properties = [];
+            
+            // First, validate any MLS numbers that don't have addresses
+            const validationPromises = [];
+            
+            mlsInputs.forEach((inputId, index) => {
+                const mlsNumber = document.getElementById(inputId).value.trim();
+                const addressDiv = document.getElementById(`address${index + 1}`);
+                const address = addressDiv.textContent.trim();
+                
+                if (mlsNumber && !address && !validatedProperties.has(inputId)) {
+                    console.log(`Auto-validating MLS ${mlsNumber} for property ${index + 1}`);
+                    validationPromises.push(validateMLS(inputId, mlsNumber, addressDiv));
+                }
+            });
+            
+            // Wait for all validations to complete
+            if (validationPromises.length > 0) {
+                routeResultDiv.innerHTML = 'Validating MLS numbers... Please wait.';
+                await Promise.all(validationPromises);
+            }
+            
+            // Now collect all properties with data
+            mlsInputs.forEach((inputId, index) => {
+                const mlsNumber = document.getElementById(inputId).value.trim();
+                const minutes = document.getElementById(`time${index + 1}`).value || '30';
+                const addressDiv = document.getElementById(`address${index + 1}`);
+                const address = addressDiv.textContent.trim();
+                
+                // Include any property that has both MLS number and address
+                if (mlsNumber && address) {
+                    // Clean the address - remove any check marks or status indicators
+                    const cleanAddress = address.replace(/✅\s*/g, '').replace(/❌\s*/g, '').trim();
+                    
+                    properties.push({
+                        mlsNumber,
+                        address: cleanAddress,
+                        visitDuration: parseInt(minutes)
+                    });
+                } else if (mlsNumber && !address) {
+                    console.warn(`Property ${index + 1}: MLS ${mlsNumber} could not be validated - skipping from route`);
+                } else if (!mlsNumber && address) {
+                    // Clean the address - remove any check marks or status indicators  
+                    const cleanAddress = address.replace(/✅\s*/g, '').replace(/❌\s*/g, '').trim();
+                    
+                    properties.push({
+                        mlsNumber: `PRESET-${index + 1}`,
+                        address: cleanAddress,
+                        visitDuration: parseInt(minutes)
+                    });
+                }
+            });
+            
+            const routeResultDiv = document.getElementById('routeResult');
+            
+            // Show loading state
+            routeResultDiv.className = 'loading';
+            routeResultDiv.innerHTML = 'Optimizing route... This may take a few seconds.';
+            routeResultDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch('/optimize-route', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        officeAddress: officeAddress,
+                        properties: properties
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayRouteResults(data.route, officeAddress, properties);
+                } else {
+                    routeResultDiv.className = 'error';
+                    routeResultDiv.innerHTML = data.message;
+                }
+            } catch (error) {
+                routeResultDiv.className = 'error';
+                routeResultDiv.innerHTML = 'An error occurred while optimizing the route. Please try again.';
+            }
+        });
+
+        function displayRouteResults(route, officeAddress, properties) {
+            const routeResultDiv = document.getElementById('routeResult');
+            
+            // Store current route data for sharing functionality
+            currentRouteData = {
+                officeAddress: officeAddress,
+                properties: properties,
+                route: route
+            };
+            
+            let html = `
+                <div class="route-summary">
+                    <h3>Optimized Route Plan</h3>
+                    <p><strong>Total Trip Duration:</strong> ${route.totalDuration}</p>
+                    ${route.totalDistance ? `<p><strong>Total Distance:</strong> ${route.totalDistance}</p>` : ''}
+                    <p><strong>Start Time:</strong> ${route.startTime || 'Flexible'}</p>
+                    <p><strong>Return Time:</strong> ${route.returnTime}</p>
+                    
+                    ${route.googleMapsUrl ? `
+                        <div style="margin: 20px 0; padding: 15px; background: #e8f5e8; border-radius: 8px; border: 1px solid #28a745;">
+                            <h4 style="margin: 0 0 10px 0; color: #28a745;">📍 Open in Google Maps</h4>
+                            <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">Click the link below to open this route directly in Google Maps with all waypoints:</p>
+                            <a href="${route.googleMapsUrl}" target="_blank" style="
+                                display: inline-block;
+                                background: #28a745;
+                                color: white;
+                                padding: 10px 20px;
+                                text-decoration: none;
+                                border-radius: 5px;
+                                font-weight: bold;
+                                margin-right: 10px;
+                            ">🗺️ Open in Google Maps</a>
+                            <button onclick="copyGoogleMapsLink('${route.googleMapsUrl.replace(/'/g, "\\'")}', this)" style="
+                                background: #007bff;
+                                color: white;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 5px;
+                                font-weight: bold;
+                                cursor: pointer;
+                                margin-right: 10px;
+                            ">📋 Copy Link</button>
+                        </div>
+                    ` : ''}
+                    
+                    ${route.optimizationNotes ? `<p style="font-style: italic; color: #666; font-size: 14px;">${route.optimizationNotes}</p>` : ''}
+                </div>
+            `;
+            
+            route.steps.forEach((step, index) => {
+                html += `
+                    <div class="route-step">
+                        <h4>Step ${index + 1}: ${step.type}</h4>
+                        <p><strong>Location:</strong> ${step.address}</p>
+                        <p><strong>Arrival Time:</strong> ${step.arrivalTime}</p>
+                        <p><strong>Duration:</strong> ${step.duration}</p>
+                        ${step.distance ? `<p><strong>Distance:</strong> ${step.distance}</p>` : ''}
+                        ${step.visitDuration ? `<p><strong>Visit Time:</strong> ${step.visitDuration} minutes</p>` : ''}
+                        ${step.mlsNumber ? `<p><strong>MLS:</strong> ${step.mlsNumber}</p>` : ''}
+                        ${step.realTravelTime ? `<p style="font-size: 12px; color: #28a745;"><em>✓ Real-time traffic data</em></p>` : ''}
+                    </div>
+                `;
+            });
+            
+            routeResultDiv.innerHTML = html;
+            routeResultDiv.className = 'success';
+            
+            // Extract property visits from route steps and display on existing map
+            const propertySteps = route.steps.filter(step => step.mlsNumber);
+            
+            // Display route on map if we have properties
+            if (propertySteps.length > 0 && map) {
+                displayRouteOnMap(officeAddress, propertySteps, propertySteps);
+            }
+        }
+
+        // Document Upload Functions
+        let extractedData = null;
+
+        async function handleFileUpload(fileInput) {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const uploadStatus = document.getElementById('uploadStatus');
+            const uploadResults = document.getElementById('uploadResults');
+            const extractedInfo = document.getElementById('extractedInfo');
+            const useBtn = document.querySelector('.use-extracted-btn');
+
+            // Reset state
+            uploadResults.style.display = 'none';
+            useBtn.style.display = 'none';
+            extractedData = null;
+
+            // Show processing status
+            uploadStatus.className = 'upload-status processing';
+            uploadStatus.textContent = `🔄 Processing ${file.name}... This may take a moment.`;
+
+            try {
+                const formData = new FormData();
+                formData.append('document', file);
+
+                const response = await fetch('/upload-document', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    uploadStatus.className = 'upload-status success';
+                    uploadStatus.textContent = `✅ Document processed successfully!`;
+
+                    // Display extracted information
+                    let infoHtml = '';
+
+                    if (result.mlsNumbers && result.mlsNumbers.length > 0) {
+                        infoHtml += '<div class="extracted-mls">';
+                        infoHtml += '<strong>🏠 MLS Numbers Found:</strong><br>';
+                        result.mlsNumbers.forEach(mls => {
+                            infoHtml += `<span style="background: #e8f5e8; padding: 4px 8px; border-radius: 4px; margin: 2px; display: inline-block;">${mls}</span> `;
+                        });
+                        infoHtml += '</div>';
+                    }
+
+                    if (result.addresses && result.addresses.length > 0) {
+                        infoHtml += '<div class="extracted-address">';
+                        infoHtml += '<strong>📍 Addresses Found:</strong><br>';
+                        result.addresses.forEach(address => {
+                            infoHtml += `<div style="margin: 5px 0; padding: 8px; background: #f0f8ff; border-radius: 4px;">${address}</div>`;
+                        });
+                        infoHtml += '</div>';
+                    }
+
+                    if (result.primaryProperty) {
+                        infoHtml += '<div class="extracted-address">';
+                        infoHtml += '<strong>🎯 Primary Property (DDF/MLS Verified):</strong><br>';
+                        infoHtml += `<div style="margin: 5px 0; padding: 10px; background: #e8f8e8; border-radius: 4px; border: 2px solid #4CAF50;">`;
+                        infoHtml += `<strong>MLS:</strong> ${result.primaryProperty.mlsNumber}<br>`;
+                        infoHtml += `<strong>Address:</strong> ${result.primaryProperty.address}`;
+                        if (result.primaryProperty.fullData.propertyType) {
+                            infoHtml += `<br><strong>Type:</strong> ${result.primaryProperty.fullData.propertyType}`;
+                        }
+                        if (result.primaryProperty.fullData.price) {
+                            infoHtml += `<br><strong>Price:</strong> $${result.primaryProperty.fullData.price}`;
+                        }
+                        infoHtml += `</div></div>`;
+                    }
+
+                    if (result.propertyDetails && Object.keys(result.propertyDetails).length > 0) {
+                        infoHtml += '<div style="margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 4px;">';
+                        infoHtml += '<strong>Additional Details:</strong><br>';
+                        if (result.propertyDetails.prices) {
+                            infoHtml += `💰 Prices: ${result.propertyDetails.prices.join(', ')}<br>`;
+                        }
+                        if (result.propertyDetails.bedrooms) {
+                            infoHtml += `🛏️ Bedrooms: ${result.propertyDetails.bedrooms}<br>`;
+                        }
+                        if (result.propertyDetails.bathrooms) {
+                            infoHtml += `🚿 Bathrooms: ${result.propertyDetails.bathrooms}<br>`;
+                        }
+                        if (result.propertyDetails.squareFootage) {
+                            infoHtml += `📐 Sq Ft: ${result.propertyDetails.squareFootage}<br>`;
+                        }
+                        if (result.propertyDetails.propertyType) {
+                            infoHtml += `🏡 Type: ${result.propertyDetails.propertyType}`;
+                        }
+                        infoHtml += '</div>';
+                    }
+
+                    if (!infoHtml) {
+                        infoHtml = '<div style="color: #f44336; padding: 10px;">❌ No MLS numbers or addresses could be extracted from this document. Please check the document quality or try a different file.</div>';
+                    } else {
+                        // Store extracted data for use
+                        extractedData = result;
+                        useBtn.style.display = 'inline-block';
+                    }
+
+                    extractedInfo.innerHTML = infoHtml;
+                    uploadResults.style.display = 'block';
+
+                } else {
+                    uploadStatus.className = 'upload-status error';
+                    uploadStatus.textContent = `❌ Error: ${result.message}`;
+                }
+
+            } catch (error) {
+                console.error('Upload error:', error);
+                uploadStatus.className = 'upload-status error';
+                uploadStatus.textContent = '❌ Upload failed. Please try again.';
+            }
+        }
+
+        function useExtractedData() {
+            if (!extractedData) return;
+
+            let propertiesAdded = 0;
+
+            // Use primary property first if available
+            if (extractedData.primaryProperty) {
+                const mls = extractedData.primaryProperty.mlsNumber;
+                const address = extractedData.primaryProperty.address;
+                
+                // Fill first empty property slot
+                for (let i = 1; i <= 5; i++) {
+                    const mlsInput = document.getElementById(`mls${i}`);
+                    const addressDiv = document.getElementById(`address${i}`);
+                    
+                    if (!mlsInput.value) {
+                        mlsInput.value = mls;
+                        // Set default visit time
+                        const timeInput = document.getElementById(`time${i}`);
+                        if (!timeInput.value) {
+                            timeInput.value = '30';
+                        }
+                        
+                        // Show address
+                        addressDiv.innerHTML = `<div class="address-result valid">${address}</div>`;
+                        propertiesAdded++;
+                        break;
+                    }
+                }
+            } else if (extractedData.mlsNumbers && extractedData.mlsNumbers.length > 0) {
+                // Use extracted MLS numbers
+                for (let i = 0; i < Math.min(extractedData.mlsNumbers.length, 5); i++) {
+                    const propertyNum = i + 1;
+                    const mlsInput = document.getElementById(`mls${propertyNum}`);
+                    
+                    if (!mlsInput.value) {
+                        mlsInput.value = extractedData.mlsNumbers[i];
+                        
+                        // Set default visit time
+                        const timeInput = document.getElementById(`time${propertyNum}`);
+                        if (!timeInput.value) {
+                            timeInput.value = '30';
+                        }
+                        
+                        // Try to match with extracted address
+                        if (extractedData.addresses && extractedData.addresses[i]) {
+                            const addressDiv = document.getElementById(`address${propertyNum}`);
+                            addressDiv.innerHTML = `<div class="address-result">${extractedData.addresses[i]}</div>`;
+                        }
+                        
+                        propertiesAdded++;
+                    }
+                }
+            }
+
+            // Show success message
+            const uploadStatus = document.getElementById('uploadStatus');
+            uploadStatus.className = 'upload-status success';
+            uploadStatus.textContent = `✅ Added ${propertiesAdded} propert${propertiesAdded === 1 ? 'y' : 'ies'} to your route!`;
+
+            // Hide the results section after use
+            setTimeout(() => {
+                document.getElementById('uploadResults').style.display = 'none';
+            }, 2000);
+        }
+
+        // Handle individual property document uploads
+        async function handlePropertyUpload(propertyNumber, fileInput) {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const uploadStatus = document.getElementById(`uploadStatus${propertyNumber}`);
+            const mlsInput = document.getElementById(`mls${propertyNumber}`);
+            const timeInput = document.getElementById(`time${propertyNumber}`);
+            const addressDiv = document.getElementById(`address${propertyNumber}`);
+
+            // Show processing status
+            uploadStatus.className = 'upload-status-indicator processing';
+            uploadStatus.textContent = `Processing...`;
+
+            try {
+                const formData = new FormData();
+                formData.append('document', file);
+
+                const response = await fetch('/upload-document', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    let dataFilled = false;
+
+                    // Use primary property data if available (DDF verified)
+                    if (result.primaryProperty) {
+                        mlsInput.value = result.primaryProperty.mlsNumber;
+                        addressDiv.innerHTML = `<div class="address-result valid">${result.primaryProperty.address}</div>`;
+                        
+                        // Set default time if empty
+                        if (!timeInput.value) {
+                            timeInput.value = '30';
+                        }
+
+                        uploadStatus.className = 'upload-status-indicator success';
+                        uploadStatus.textContent = `✅ MLS Verified`;
+                        dataFilled = true;
+                    }
+                    // Use extracted MLS numbers if available
+                    else if (result.mlsNumbers && result.mlsNumbers.length > 0) {
+                        mlsInput.value = result.mlsNumbers[0];
+                        
+                        // Show address if available
+                        if (result.addresses && result.addresses.length > 0) {
+                            addressDiv.innerHTML = `<div class="address-result">${result.addresses[0]}</div>`;
+                        }
+                        
+                        // Set default time if empty
+                        if (!timeInput.value) {
+                            timeInput.value = '30';
+                        }
+
+                        uploadStatus.className = 'upload-status-indicator success';
+                        uploadStatus.textContent = `✅ MLS Found`;
+                        dataFilled = true;
+                    }
+
+                    if (!dataFilled) {
+                        uploadStatus.className = 'upload-status-indicator error';
+                        uploadStatus.textContent = `❌ No MLS found`;
+                    }
+
+                } else {
+                    uploadStatus.className = 'upload-status-indicator error';
+                    uploadStatus.textContent = `❌ Error`;
+                }
+
+            } catch (error) {
+                console.error(`Property ${propertyNumber} upload error:`, error);
+                uploadStatus.className = 'upload-status-indicator error';
+                uploadStatus.textContent = `❌ Failed`;
+            }
+
+            // Clear the file input for next use
+            fileInput.value = '';
+        }
+    </script>
+</body>
+</html>

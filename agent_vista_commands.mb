@@ -1,0 +1,9 @@
+Phase 2
+Route optimization based on enterted addresses. 
+The user wants to visit multiple properties and need to plan for an optimized route based their start point which is the user's office address.
+The user will enter their address is a field
+At the bottom the user can enter upto 5 Realtor listing numbers in separate fields, and the time in minute required to vsit each property in another field in fron of it.
+This tool should give the user a route plan based on driving that is optimized and the user can spend the required minutes in each propery. Consider the fact that the end point of the visit is also the user's office address.
+I am not familiar with route optimization api's, not sure google map has anything or if there is a generative AI API for it. 
+IF the user enters a wrong mls number for any of the fields, this tool should not do to route optimization and should let the user know to fix it.
+Also, for testing purposes, enter the address of the property when it is found after the minute text box for each proerty 
